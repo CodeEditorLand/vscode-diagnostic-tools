@@ -1,56 +1,86 @@
 {
 	"name": "vscode-diagnostic-tools",
 	"displayName": "VS Code Diagnostic Tools",
+	"version": "0.0.1",
+	"private": false,
 	"description": "A collection of tools designed to aid debugging and developing VS Code",
-	"version": "1.1.2",
-	"license": "MIT",
-	"engines": {
-		"vscode": "^1.75.0"
+	"keywords": [
+		"land"
+	],
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/LandDiagnosticTools#readme",
+	"bugs": {
+		"url": "HTTPS://GitHub.Com/CodeEditorLand/LandDiagnosticTools/issues"
 	},
-	"publisher": "ms-vscode",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/microsoft/vscode-diagnostic-tools"
+		"url": "git+HTTPS://github.com/CodeEditorLand/LandDiagnosticTools.git"
 	},
-	"activationEvents": [
-		"onDebug"
-	],
-	"browser": "./dist/web/index.js",
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "🌆 — Land —",
+		"email": "Land@PlayForm.Cloud",
+		"url": "HTTPS://Land.PlayForm.Cloud"
+	},
+	"type": "module",
 	"main": "./dist/desktop/index.js",
+	"browser": "./dist/web/index.js",
+	"scripts": {
+		"Document": "Document 'Source/**/*.ts'",
+		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
+		"build-tsc": "tsc",
+		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
+		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
+		"bundle": "vsce package -o dist/extension.vsix",
+		"dev": "tsc --watch",
+		"prepublishOnly": "Build 'Source/**/*.ts'"
+	},
 	"contributes": {
+		"commands": [
+			{
+				"category": "Merge Editor",
+				"command": "vscode-diagnostic-tools.open-folder-in-merge-editor-current",
+				"title": "Open Folder In Merge Editor"
+			},
+			{
+				"category": "Merge Editor",
+				"command": "vscode-diagnostic-tools.reproduce-conflict-in-playground",
+				"title": "Reproduce Conflict In Playground"
+			},
+			{
+				"category": "Diagnose Diff Editor",
+				"command": "vscode-diagnostic-tools.open-diff-in-monaco-editor-playground",
+				"enablement": "isInDiffEditor",
+				"title": "Open In Monaco Editor Playground"
+			},
+			{
+				"category": "Diagnose Diff Editor",
+				"command": "vscode-diagnostic-tools.diff-editor-report-bug",
+				"enablement": "isInDiffEditor",
+				"title": "Report Bug"
+			}
+		],
+		"configuration": {
+			"properties": {
+				"vscode-diagnostic-tools.debuggerScriptsConfig": {
+					"title": "Debugger Scripts Config",
+					"type": "object"
+				},
+				"vscode-diagnostic-tools.merge-editor.git-repo-target-path": {
+					"title": "Should point to an empty/non-existing folder where the merge conflicts are to be reproduced. Can use ${workspaceFolder} to refer to the current workspace folder.",
+					"type": "string"
+				}
+			},
+			"title": "VS Code Diagnostic Tools"
+		},
 		"customEditors": [
 			{
-				"viewType": "diffJsonViewer",
 				"displayName": "Diff",
 				"selector": [
 					{
 						"filenamePattern": "*.diff.json"
 					}
-				]
-			}
-		],
-		"commands": [
-			{
-				"command": "vscode-diagnostic-tools.open-folder-in-merge-editor-current",
-				"title": "Open Folder In Merge Editor",
-				"category": "Merge Editor"
-			},
-			{
-				"command": "vscode-diagnostic-tools.reproduce-conflict-in-playground",
-				"title": "Reproduce Conflict In Playground",
-				"category": "Merge Editor"
-			},
-			{
-				"command": "vscode-diagnostic-tools.open-diff-in-monaco-editor-playground",
-				"title": "Open In Monaco Editor Playground",
-				"enablement": "isInDiffEditor",
-				"category": "Diagnose Diff Editor"
-			},
-			{
-				"command": "vscode-diagnostic-tools.diff-editor-report-bug",
-				"title": "Report Bug",
-				"enablement": "isInDiffEditor",
-				"category": "Diagnose Diff Editor"
+				],
+				"viewType": "diffJsonViewer"
 			}
 		],
 		"menus": {
@@ -64,42 +94,23 @@
 					"when": "explorerResourceIsFolder && resourceFilename =~ /merge-conflict/"
 				}
 			]
-		},
-		"configuration": {
-			"title": "VS Code Diagnostic Tools",
-			"properties": {
-				"vscode-diagnostic-tools.merge-editor.git-repo-target-path": {
-					"type": "string",
-					"title": "Should point to an empty/non-existing folder where the merge conflicts are to be reproduced. Can use ${workspaceFolder} to refer to the current workspace folder."
-				},
-				"vscode-diagnostic-tools.debuggerScriptsConfig": {
-					"type": "object",
-					"title": "Debugger Scripts Config"
-				}
-			}
 		}
 	},
+	"activationEvents": [
+		"onDebug"
+	],
 	"dependencies": {
 		"@types/node": "^18.7.23",
-		"@types/vscode": "^1.71.0",
 		"base64-js": "^1.5.1",
 		"lzma": "^2.3.2",
-		"messagepack": "^1.1.12",
-		"typescript": "^4.8.2"
-	},
-	"scripts": {
-		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
-		"build-tsc": "tsc",
-		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
-		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
-		"dev": "tsc --watch",
-		"bundle": "vsce package -o dist/extension.vsix"
+		"messagepack": "^1.1.12"
 	},
 	"devDependencies": {
-		"clean-webpack-plugin": "^4.0.0",
-		"ts-loader": "^9.5.0",
-		"ts-node": "^10.9.1",
-		"webpack": "^5.89.0",
-		"webpack-cli": "^5.1.4"
+		"@playform/build": "0.0.7",
+		"@playform/document": "0.0.6",
+		"ts-loader": "^9.5.0"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
