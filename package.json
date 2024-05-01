@@ -100,15 +100,15 @@
 		"onDebug"
 	],
 	"dependencies": {
-		"@types/node": "^18.7.23",
-		"base64-js": "^1.5.1",
-		"lzma": "^2.3.2",
-		"messagepack": "^1.1.12"
+		"@types/node": "20.12.7",
+		"base64-js": "1.5.1",
+		"lzma": "2.3.2",
+		"messagepack": "1.1.12"
 	},
 	"devDependencies": {
 		"@playform/build": "0.0.7",
 		"@playform/document": "0.0.6",
-		"ts-loader": "^9.5.0"
+		"ts-loader": "9.5.1"
 	},
 	"publishConfig": {
 		"access": "public"
