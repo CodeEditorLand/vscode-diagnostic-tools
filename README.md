@@ -81,7 +81,7 @@ Such a script could look like this:
 
 console.log('script loaded');
 
-
+/** @type {RunFunction} */
 module.exports.run = async function (debugSession) {
 	console.log('script started');
 

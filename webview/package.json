@@ -1,13 +1,8 @@
 {
+	"private": true,
 	"main": "index.js",
-	"scripts": {
-		"Document": "Document 'Source/**/*.ts'",
-		"prepublishOnly": "Build 'Source/**/*.ts'"
-	},
+	"license": "MIT",
 	"dependencies": {
-		"monaco-editor": "0.48.0"
-	},
-	"devDependencies": {
-		"@playform/build": "0.0.7"
+		"monaco-editor": "^0.45.0-dev-20231205"
 	}
 }
