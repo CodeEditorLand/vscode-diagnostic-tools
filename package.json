@@ -78,12 +78,12 @@
 		"onDebug"
 	],
 	"dependencies": {
-		"@types/node": "18.7.23",
+		"@types/node": "20.12.12",
 		"base64-js": "1.5.1",
 		"lzma": "2.3.2",
 		"messagepack": "1.1.12"
 	},
 	"devDependencies": {
-		"ts-loader": "9.5.0"
+		"ts-loader": "9.5.1"
 	}
 }
