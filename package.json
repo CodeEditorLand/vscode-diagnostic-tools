@@ -5,7 +5,7 @@
 	"version": "1.1.2",
 	"license": "MIT",
 	"engines": {
-		"vscode": "1.75.0"
+		"vscode": "^1.75.0"
 	},
 	"publisher": "ms-vscode",
 	"repository": {
@@ -80,12 +80,12 @@
 		}
 	},
 	"dependencies": {
-		"@types/node": "20.14.5",
-		"@types/vscode": "1.90.0",
-		"base64-js": "1.5.1",
-		"lzma": "2.3.2",
-		"messagepack": "1.1.12",
-		"typescript": "5.4.5"
+		"@types/node": "^18.7.23",
+		"@types/vscode": "^1.71.0",
+		"base64-js": "^1.5.1",
+		"lzma": "^2.3.2",
+		"messagepack": "^1.1.12",
+		"typescript": "^4.8.2"
 	},
 	"scripts": {
 		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
@@ -96,10 +96,10 @@
 		"bundle": "vsce package -o dist/extension.vsix"
 	},
 	"devDependencies": {
-		"clean-webpack-plugin": "4.0.0",
-		"ts-loader": "9.5.1",
-		"ts-node": "10.9.2",
-		"webpack": "5.92.0",
-		"webpack-cli": "5.1.4"
+		"clean-webpack-plugin": "^4.0.0",
+		"ts-loader": "^9.5.0",
+		"ts-node": "^10.9.1",
+		"webpack": "^5.89.0",
+		"webpack-cli": "^5.1.4"
 	}
 }
