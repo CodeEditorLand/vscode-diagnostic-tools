@@ -1,17 +1,8 @@
 {
-	"name": "vscode-diagnostic-tools",
-	"displayName": "VS Code Diagnostic Tools",
-	"description": "A collection of tools designed to aid debugging and developing VS Code",
-	"main": "./dist/desktop/index.js",
+	"activationEvents": [
+		"onDebug"
+	],
 	"browser": "./dist/web/index.js",
-	"scripts": {
-		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
-		"build-tsc": "tsc",
-		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
-		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
-		"bundle": "vsce package -o dist/extension.vsix",
-		"dev": "tsc --watch"
-	},
 	"contributes": {
 		"commands": [
 			{
@@ -74,16 +65,25 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"onDebug"
-	],
 	"dependencies": {
 		"@types/node": "^18.7.23",
 		"base64-js": "^1.5.1",
 		"lzma": "^2.3.2",
 		"messagepack": "^1.1.12"
 	},
+	"description": "A collection of tools designed to aid debugging and developing VS Code",
 	"devDependencies": {
 		"ts-loader": "^9.5.0"
+	},
+	"displayName": "VS Code Diagnostic Tools",
+	"main": "./dist/desktop/index.js",
+	"name": "vscode-diagnostic-tools",
+	"scripts": {
+		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
+		"build-tsc": "tsc",
+		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
+		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
+		"bundle": "vsce package -o dist/extension.vsix",
+		"dev": "tsc --watch"
 	}
 }
