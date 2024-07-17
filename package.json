@@ -4,12 +4,26 @@
 	"description": "A collection of tools designed to aid debugging and developing VS Code",
 	"main": "./dist/desktop/index.js",
 	"browser": "./dist/web/index.js",
+	"files": [
+		"dist/**/*",
+		"package.json",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE.md",
+		"webview/src/**/*",
+		"foobar",
+		"webview/node_modules/monaco-editor/min/**/*",
+		"docs/**/*",
+		"node_modules/base64-js/**/*",
+		"node_modules/lzma/**/*",
+		"node_modules/messagepack/**/*"
+	],
 	"scripts": {
-		"build": "npm run build-webpack-desktop && npm run build-webpack-web",
+		"build": "npm run build-webpack-desktop && npm run build-webpack-web && yarn run bundle",
 		"build-tsc": "tsc",
 		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
 		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
-		"bundle": "vsce package -o dist/extension.vsix",
+		"bundle": "vsce package -o extension.vsix --allow-star-activation",
 		"dev": "tsc --watch"
 	},
 	"contributes": {
@@ -35,6 +49,11 @@
 				"command": "vscode-diagnostic-tools.diff-editor-report-bug",
 				"enablement": "isInDiffEditor",
 				"title": "Report Bug"
+			},
+			{
+				"category": "Diagnostic Tools",
+				"command": "vscode-diagnostic-tools.debug-extension-host",
+				"title": "Debug Extension Host"
 			}
 		],
 		"configuration": {
@@ -57,8 +76,7 @@
 					{
 						"filenamePattern": "*.diff.json"
 					}
-				],
-				"viewType": "diffJsonViewer"
+				]
 			}
 		],
 		"menus": {
