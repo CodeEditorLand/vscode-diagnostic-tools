@@ -76,8 +76,7 @@
 					{
 						"filenamePattern": "*.diff.json"
 					}
-				],
-				"viewType": "diffJsonViewer"
+				]
 			}
 		],
 		"menus": {
@@ -94,16 +93,15 @@
 		}
 	},
 	"activationEvents": [
-		"onDebug",
-		"*"
+		"onDebug"
 	],
 	"dependencies": {
-		"@types/node": "20.14.11",
+		"@types/node": "18.7.23",
 		"base64-js": "1.5.1",
 		"lzma": "2.3.2",
 		"messagepack": "1.1.12"
 	},
 	"devDependencies": {
-		"ts-loader": "9.5.1"
+		"ts-loader": "9.5.0"
 	}
 }
