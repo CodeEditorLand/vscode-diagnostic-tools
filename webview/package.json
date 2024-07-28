@@ -1,6 +1,6 @@
 {
-	"main": "index.js",
 	"dependencies": {
 		"monaco-editor": "0.45.0-dev-20231205"
-	}
+	},
+	"main": "index.js"
 }
