@@ -67,14 +67,14 @@
 		}
 	},
 	"dependencies": {
-		"@types/node": "^18.7.23",
-		"base64-js": "^1.5.1",
-		"lzma": "^2.3.2",
-		"messagepack": "^1.1.12"
+		"@types/node": "22.6.0",
+		"base64-js": "1.5.1",
+		"lzma": "2.3.2",
+		"messagepack": "1.1.12"
 	},
 	"description": "A collection of tools designed to aid debugging and developing VS Code",
 	"devDependencies": {
-		"ts-loader": "^9.5.0"
+		"ts-loader": "9.5.1"
 	},
 	"displayName": "VS Code Diagnostic Tools",
 	"files": [
