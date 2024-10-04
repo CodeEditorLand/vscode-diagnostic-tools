@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { LzmaCompressor } from "./lzmaCompressor";
 
 export class DiffEditorHelpers {
@@ -10,7 +11,7 @@ export class DiffEditorHelpers {
 				if (url) {
 					await vscode.env.openExternal(vscode.Uri.parse(url));
 				}
-			}
+			},
 		);
 
 		vscode.commands.registerCommand(
@@ -21,7 +22,7 @@ export class DiffEditorHelpers {
 					return;
 				}
 				const githubUrl = new URL(
-					"https://github.com/microsoft/vscode/issues/new"
+					"https://github.com/microsoft/vscode/issues/new",
 				);
 				githubUrl.searchParams.set(
 					"body",
@@ -32,7 +33,7 @@ export class DiffEditorHelpers {
 
 ## Playground Example
 
-[Monaco Editor Playground Repro](${monacoEditorUrl}) (click on "use latest dev" to verify a future bug-fix)\n`
+[Monaco Editor Playground Repro](${monacoEditorUrl}) (click on "use latest dev" to verify a future bug-fix)\n`,
 				);
 				githubUrl.searchParams.set("assignees", "hediet");
 				githubUrl.searchParams.set("labels", "diff-editor");
@@ -44,7 +45,7 @@ export class DiffEditorHelpers {
 					query: githubUrl.search,
 				});
 				await vscode.env.openExternal(githubUrl.toString() as any);
-			}
+			},
 		);
 	}
 }
@@ -62,10 +63,10 @@ async function getMonacoEditorUrl() {
 	};
 
 	const mod = vscode.workspace.textDocuments.find(
-		(doc) => doc.uri.toString() === input.modified.toString()
+		(doc) => doc.uri.toString() === input.modified.toString(),
 	);
 	const orig = vscode.workspace.textDocuments.find(
-		(doc) => doc.uri.toString() === input.original.toString()
+		(doc) => doc.uri.toString() === input.original.toString(),
 	);
 
 	const activeTextEditor = vscode.window.activeTextEditor;
@@ -90,7 +91,7 @@ async function getMonacoEditorUrl() {
 			d.startLineNumber - 1,
 			d.startColumn - 1,
 			d.endLineNumber - 1,
-			d.endColumn - 1
+			d.endColumn - 1,
 		);
 	}
 
@@ -112,7 +113,7 @@ async function getMonacoEditorUrl() {
 			...vscode.workspace.getConfiguration("").get("diffEditor"),
 		},
 		undefined,
-		"\t"
+		"\t",
 	);
 
 	function toLiteralStringExpr(value: string): string {
@@ -171,14 +172,14 @@ async function getLatestDevVersion() {
 	try {
 		const data = (await (
 			await (globalThis as any).fetch(
-				"https://registry.npmjs.org/-/package/monaco-editor/dist-tags"
+				"https://registry.npmjs.org/-/package/monaco-editor/dist-tags",
 			)
 		).json()) as { latest: string; next: string };
 		return data.next;
 	} catch (e) {
 		const data = (await (
 			await (globalThis as any).fetch(
-				"https://cdn.jsdelivr.net/npm/monaco-editor@next/package.json"
+				"https://cdn.jsdelivr.net/npm/monaco-editor@next/package.json",
 			)
 		).json()) as { version: string };
 		return data.version;

@@ -17,7 +17,7 @@ interface IDebugSession {
 }
 
 interface Context {
-	vscode: typeof import('vscode');
+	vscode: typeof import("vscode");
 }
 
 interface IDisposable {

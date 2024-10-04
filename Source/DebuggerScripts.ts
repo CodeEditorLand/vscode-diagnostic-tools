@@ -31,7 +31,7 @@ export class DebuggerScripts {
 		if (session) {
 			managedSessions.set(
 				session,
-				new ManagedDebugSession(session, scriptManager)
+				new ManagedDebugSession(session, scriptManager),
 			);
 		}
 	}
@@ -45,7 +45,7 @@ interface ScriptModule {
 	run?: RunFunction;
 }
 
-const nodeJsRequire = eval('require'); // CodeQL [SM04509] This is to prevent webpack from rewriting "require", because we really want the nodejs require function here.
+const nodeJsRequire = eval("require"); // CodeQL [SM04509] This is to prevent webpack from rewriting "require", because we really want the nodejs require function here.
 
 class HotScript<T> {
 	private _timeout: NodeJS.Timeout | undefined;
@@ -100,8 +100,8 @@ class HotScript<T> {
 class HotScriptReference<T> {
 	constructor(
 		private readonly _script: HotScript<T>,
-		public readonly dispose: () => void
-	) { }
+		public readonly dispose: () => void,
+	) {}
 
 	public onExportsChanged(watcher: () => void): IDisposable {
 		return this._script.onExportsChanged(watcher);
@@ -146,7 +146,7 @@ class ManagedDebugSession {
 
 	constructor(
 		private readonly _session: vscode.DebugSession,
-		private readonly _scriptManager: ScriptManager
+		private readonly _scriptManager: ScriptManager,
 	) {
 		const config: LaunchConfigExtension = {};
 		let s: vscode.DebugSession | undefined = _session;
@@ -159,7 +159,7 @@ class ManagedDebugSession {
 			config["vscode-diagnostic-tools.debuggerScripts"];
 		if (debuggerScripts) {
 			const scripts = debuggerScripts.flatMap((path) =>
-				resolvePaths(path, this._session.workspaceFolder)
+				resolvePaths(path, this._session.workspaceFolder),
 			);
 			for (const script of scripts) {
 				const scriptRef =
@@ -191,7 +191,7 @@ class ManagedDebugSession {
 					}
 					if (!scriptRef.exports.run) {
 						console.error(
-							`'${script}' does not export a 'run' function!`
+							`'${script}' does not export a 'run' function!`,
 						);
 						return;
 					}
@@ -200,7 +200,7 @@ class ManagedDebugSession {
 					try {
 						scriptDisposable = scriptRef.exports.run(
 							this._debugSessionApi,
-							{ vscode: vscode }
+							{ vscode: vscode },
 						);
 						await scriptDisposable;
 					} catch (e) {
@@ -211,7 +211,7 @@ class ManagedDebugSession {
 				this._disposables.push(
 					scriptRef.onExportsChanged(() => {
 						runScript();
-					})
+					}),
 				);
 				runScript();
 			}
@@ -228,14 +228,14 @@ class ManagedDebugSession {
 
 function resolvePaths(
 	path: string,
-	workspaceFolder: vscode.WorkspaceFolder | undefined
+	workspaceFolder: vscode.WorkspaceFolder | undefined,
 ): string[] {
 	const tpl = new StringTemplate(path);
 	const resolvedPath = tpl.evaluate({
 		workspaceFolder: () => {
 			if (!workspaceFolder) {
 				throw new Error(
-					`Cannot get workspace folder - '${path}' cannot be evaluated!`
+					`Cannot get workspace folder - '${path}' cannot be evaluated!`,
 				);
 			}
 			return workspaceFolder.uri.fsPath;
@@ -245,11 +245,11 @@ function resolvePaths(
 }
 
 export class StringTemplate {
-	constructor(private readonly template: string) { }
+	constructor(private readonly template: string) {}
 
 	evaluate(data: Record<string, () => string>): string {
 		return this.template.replace(/\$\{([a-zA-Z0-9]+)\}/g, (substr, grp1) =>
-			data[grp1]()
+			data[grp1](),
 		);
 	}
 }

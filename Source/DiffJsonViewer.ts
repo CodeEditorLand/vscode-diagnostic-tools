@@ -8,7 +8,7 @@ export class DiffJsonViewer {
 				async resolveCustomTextEditor(document, webviewPanel, _token) {
 					const webviewRoot = vscode.Uri.joinPath(
 						context.extensionUri,
-						"webview"
+						"webview",
 					);
 					webviewPanel.webview.options = {
 						enableScripts: true,
@@ -16,13 +16,13 @@ export class DiffJsonViewer {
 					};
 
 					const script = webviewPanel.webview.asWebviewUri(
-						vscode.Uri.joinPath(webviewRoot, "/src/script.js")
+						vscode.Uri.joinPath(webviewRoot, "/src/script.js"),
 					);
 					const monacoEditorCore = webviewPanel.webview.asWebviewUri(
 						vscode.Uri.joinPath(
 							webviewRoot,
-							"/node_modules/monaco-editor/"
-						)
+							"/node_modules/monaco-editor/",
+						),
 					);
 
 					webviewPanel.webview.html = `
@@ -55,7 +55,7 @@ export class DiffJsonViewer {
 
 					async function update() {
 						const doc = JSON.parse(
-							document.getText()
+							document.getText(),
 						) as DiffJsonDocument;
 
 						let originalDocument = "";
@@ -69,16 +69,16 @@ export class DiffJsonViewer {
 									vscode.Uri.joinPath(
 										document.uri,
 										"..",
-										doc.modifiedFileName!
-									)
+										doc.modifiedFileName!,
+									),
 								);
 							const originalDoc =
 								await vscode.workspace.openTextDocument(
 									vscode.Uri.joinPath(
 										document.uri,
 										"..",
-										doc.originalFileName!
-									)
+										doc.originalFileName!,
+									),
 								);
 							originalDocument = originalDoc.getText();
 							modifiedDocument = modifiedDoc.getText();
@@ -128,14 +128,14 @@ export class DiffJsonViewer {
 							if (m.type === "ready") {
 								update();
 							}
-						}
+						},
 					);
 				},
 			},
 			{
 				supportsMultipleEditorsPerDocument: true,
 				webviewOptions: { retainContextWhenHidden: true },
-			}
+			},
 		);
 	}
 }
