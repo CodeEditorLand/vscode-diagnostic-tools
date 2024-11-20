@@ -1,31 +1,9 @@
 {
-	"name": "vscode-diagnostic-tools",
-	"displayName": "VS Code Diagnostic Tools",
-	"description": "A collection of tools designed to aid debugging and developing VS Code",
-	"main": "./dist/desktop/index.js",
-	"browser": "./dist/web/index.js",
-	"files": [
-		"dist/**/*",
-		"package.json",
-		"README.md",
-		"CHANGELOG.md",
-		"LICENSE.md",
-		"webview/src/**/*",
-		"foobar",
-		"webview/node_modules/monaco-editor/min/**/*",
-		"docs/**/*",
-		"node_modules/base64-js/**/*",
-		"node_modules/lzma/**/*",
-		"node_modules/messagepack/**/*"
+	"activationEvents": [
+		"onDebug",
+		"onStartupFinished"
 	],
-	"scripts": {
-		"build": "npm run build-webpack-desktop && npm run build-webpack-web && yarn run bundle",
-		"build-tsc": "tsc",
-		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
-		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
-		"bundle": "vsce package -o extension.vsix --allow-star-activation",
-		"dev": "tsc --watch"
-	},
+	"browser": "./dist/web/index.js",
 	"contributes": {
 		"commands": [
 			{
@@ -88,17 +66,39 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"onDebug",
-		"onStartupFinished"
-	],
 	"dependencies": {
 		"@types/node": "22.9.1",
 		"base64-js": "1.5.1",
 		"lzma": "2.3.2",
 		"messagepack": "1.1.12"
 	},
+	"description": "A collection of tools designed to aid debugging and developing VS Code",
 	"devDependencies": {
 		"ts-loader": "9.5.1"
+	},
+	"displayName": "VS Code Diagnostic Tools",
+	"files": [
+		"dist/**/*",
+		"package.json",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE.md",
+		"webview/src/**/*",
+		"foobar",
+		"webview/node_modules/monaco-editor/min/**/*",
+		"docs/**/*",
+		"node_modules/base64-js/**/*",
+		"node_modules/lzma/**/*",
+		"node_modules/messagepack/**/*"
+	],
+	"main": "./dist/desktop/index.js",
+	"name": "vscode-diagnostic-tools",
+	"scripts": {
+		"build": "npm run build-webpack-desktop && npm run build-webpack-web && yarn run bundle",
+		"build-tsc": "tsc",
+		"build-webpack-desktop": "webpack --config webpack.config.ts --mode production --env TARGET=desktop",
+		"build-webpack-web": "webpack --config webpack.config.ts --mode production --env TARGET=web",
+		"bundle": "vsce package -o extension.vsix --allow-star-activation",
+		"dev": "tsc --watch"
 	}
 }
