@@ -18,6 +18,7 @@ export class DiffJsonViewer {
 					const script = webviewPanel.webview.asWebviewUri(
 						vscode.Uri.joinPath(webviewRoot, "/src/script.js"),
 					);
+
 					const monacoEditorCore = webviewPanel.webview.asWebviewUri(
 						vscode.Uri.joinPath(
 							webviewRoot,
@@ -59,11 +60,14 @@ export class DiffJsonViewer {
 						) as DiffJsonDocument;
 
 						let originalDocument = "";
+
 						let modifiedDocument = "";
+
 						let originalPath: string | undefined;
 
 						if (doc.originalFileName) {
 							originalPath = doc.originalFileName;
+
 							const modifiedDoc =
 								await vscode.workspace.openTextDocument(
 									vscode.Uri.joinPath(
@@ -72,6 +76,7 @@ export class DiffJsonViewer {
 										doc.modifiedFileName!,
 									),
 								);
+
 							const originalDoc =
 								await vscode.workspace.openTextDocument(
 									vscode.Uri.joinPath(
@@ -90,6 +95,7 @@ export class DiffJsonViewer {
 
 						function guessLanguage(path: string): string {
 							const ext = path.split(".").pop();
+
 							if (ext === "js") {
 								return "javascript";
 							}

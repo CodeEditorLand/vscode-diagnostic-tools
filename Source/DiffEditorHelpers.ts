@@ -8,6 +8,7 @@ export class DiffEditorHelpers {
 			"vscode-diagnostic-tools.open-diff-in-monaco-editor-playground",
 			async (...args) => {
 				const url = await getMonacoEditorUrl();
+
 				if (url) {
 					await vscode.env.openExternal(vscode.Uri.parse(url));
 				}
@@ -18,6 +19,7 @@ export class DiffEditorHelpers {
 			"vscode-diagnostic-tools.diff-editor-report-bug",
 			async (...args) => {
 				const monacoEditorUrl = await getMonacoEditorUrl();
+
 				if (!monacoEditorUrl) {
 					return;
 				}
@@ -38,6 +40,7 @@ export class DiffEditorHelpers {
 				githubUrl.searchParams.set("assignees", "hediet");
 				githubUrl.searchParams.set("labels", "diff-editor");
 				githubUrl.searchParams.set("template", "Blank issue");
+
 				const uri = vscode.Uri.from({
 					scheme: "https",
 					authority: githubUrl.host,
@@ -52,8 +55,10 @@ export class DiffEditorHelpers {
 
 async function getMonacoEditorUrl() {
 	const activeTab = vscode.window.tabGroups.activeTabGroup.activeTab;
+
 	if (!activeTab) {
 		vscode.window.showErrorMessage("No active tab");
+
 		return;
 	}
 
@@ -65,27 +70,34 @@ async function getMonacoEditorUrl() {
 	const mod = vscode.workspace.textDocuments.find(
 		(doc) => doc.uri.toString() === input.modified.toString(),
 	);
+
 	const orig = vscode.workspace.textDocuments.find(
 		(doc) => doc.uri.toString() === input.original.toString(),
 	);
 
 	const activeTextEditor = vscode.window.activeTextEditor;
+
 	if (!activeTextEditor || !mod || !orig) {
 		vscode.window.showErrorMessage("No active text editor");
+
 		return;
 	}
 
 	let modSelection: vscode.Range | undefined = undefined;
+
 	let origSelection: vscode.Range | undefined = undefined;
 
 	const selection = activeTextEditor.selection;
+
 	if (!selection.isEmpty) {
 		// assuming modified is selected
 		modSelection = selection;
+
 		const result: { destinationSelection: any } =
 			await vscode.commands.executeCommand("diffEditor.switchSide", {
 				dryRun: true,
 			});
+
 		const d = result.destinationSelection;
 		origSelection = new vscode.Range(
 			d.startLineNumber - 1,
@@ -104,7 +116,9 @@ async function getMonacoEditorUrl() {
 	}
 
 	const modText = mod.getText(modSelection);
+
 	const origText = orig.getText(origSelection);
+
 	const settings = JSON.stringify(
 		{
 			originalEditable: true,
@@ -124,10 +138,12 @@ async function getMonacoEditorUrl() {
 				.replaceAll("$", "\\$")
 				.replaceAll("`", "\\`") +
 			"`";
+
 		return str;
 	}
 
 	const lzmaCompressor = new LzmaCompressor<MonacoEditorPlaygroundState>();
+
 	const lzmaEncoded = lzmaCompressor.encodeData<MonacoEditorPlaygroundState>({
 		html: `<div id="container" style="height: 100%"></div>`,
 		js: jsTemplate
@@ -138,7 +154,9 @@ async function getMonacoEditorUrl() {
 	});
 
 	const devVersion = await getLatestDevVersion();
+
 	const url = `https://microsoft.github.io/monaco-editor/playground.html?source=v${devVersion}#${lzmaEncoded}`;
+
 	return url;
 }
 
@@ -153,6 +171,7 @@ const originalModel = monaco.editor.createModel(
 	/* set from \`originalModel\`: */ ___originalValue___,
 	"text/plain"
 );
+
 const modifiedModel = monaco.editor.createModel(
 	/* set from \`modifiedModel\`: */ ___modifiedValue___,
 	"text/plain"
@@ -175,6 +194,7 @@ async function getLatestDevVersion() {
 				"https://registry.npmjs.org/-/package/monaco-editor/dist-tags",
 			)
 		).json()) as { latest: string; next: string };
+
 		return data.next;
 	} catch (e) {
 		const data = (await (
@@ -182,6 +202,7 @@ async function getLatestDevVersion() {
 				"https://cdn.jsdelivr.net/npm/monaco-editor@next/package.json",
 			)
 		).json()) as { version: string };
+
 		return data.version;
 	}
 }

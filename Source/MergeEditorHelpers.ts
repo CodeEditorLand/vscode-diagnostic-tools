@@ -24,6 +24,7 @@ export class MergeEditorHelpers {
 			"vscode-diagnostic-tools.open-folder-in-merge-editor-current",
 			async (...args) => {
 				vscode.window.showErrorMessage("Not implemented yet");
+
 				const uri = args[0];
 				await vscode.commands.executeCommand(
 					"merge.dev.loadContentsFromFolder",
@@ -49,6 +50,7 @@ export class MergeEditorHelpers {
 						vscode.window.showErrorMessage(
 							`Setting "${gitPlaygroundPathKey}" must be configured!`,
 						);
+
 						return;
 					}
 
@@ -58,7 +60,9 @@ export class MergeEditorHelpers {
 					);
 
 					const playgroundUri = vscode.Uri.parse(gitPlaygroundPath);
+
 					let ls: [string, vscode.FileType][] | undefined = undefined;
+
 					try {
 						ls =
 							await vscode.workspace.fs.readDirectory(
@@ -71,13 +75,16 @@ export class MergeEditorHelpers {
 						const hasGit = ls.some(
 							([name, type]) => name === ".git",
 						);
+
 						const hasTarget = ls.some(([name, type]) =>
 							name.startsWith("target"),
 						);
+
 						if (!hasGit || !hasTarget) {
 							vscode.window.showErrorMessage(
 								"Cannot delete playground folder",
 							);
+
 							return;
 						}
 						for (const item of ls) {
@@ -93,6 +100,7 @@ export class MergeEditorHelpers {
 
 					const targetDirLs =
 						await vscode.workspace.fs.readDirectory(uri);
+
 					function findFile(prefix: string): {
 						uri: vscode.Uri;
 						suffix: string;
@@ -100,6 +108,7 @@ export class MergeEditorHelpers {
 						const fileName = targetDirLs.find(([fileName]) =>
 							fileName.startsWith(prefix),
 						);
+
 						if (!fileName) {
 							throw new Error("File not found");
 						}
@@ -119,6 +128,7 @@ export class MergeEditorHelpers {
 
 					const context = { cwd: playgroundUri.fsPath };
 					await execGitCmd(["init"], context);
+
 					const playgroundTargetFile = vscode.Uri.joinPath(
 						playgroundUri,
 						`target${paths.base.suffix}`,
@@ -191,7 +201,9 @@ export class MergeEditorHelpers {
 function execGitCmd(args: string[], context: { cwd: string }) {
 	return new Promise((resolve, reject) => {
 		const commandExecuter = spawn("git", args, { cwd: context.cwd });
+
 		let stdOutData = "";
+
 		let stderrData = "";
 
 		commandExecuter.stdout.on("data", (data) => (stdOutData += data));

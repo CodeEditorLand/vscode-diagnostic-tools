@@ -21,6 +21,7 @@ export class DebuggerScripts {
 		});
 		vscode.debug.onDidTerminateDebugSession((e) => {
 			const session = managedSessions.get(e);
+
 			if (session) {
 				session.dispose();
 				managedSessions.delete(e);
@@ -28,6 +29,7 @@ export class DebuggerScripts {
 		});
 
 		const session = vscode.debug.activeDebugSession;
+
 		if (session) {
 			managedSessions.set(
 				session,
@@ -72,6 +74,7 @@ class HotScript<T> {
 
 	onExportsChanged(watcher: () => void): IDisposable {
 		this._watchers.add(watcher);
+
 		return {
 			dispose: () => {
 				this._watchers.delete(watcher);
@@ -81,8 +84,10 @@ class HotScript<T> {
 
 	private _reload() {
 		delete nodeJsRequire.cache[this.moduleId];
+
 		try {
 			this._exports = nodeJsRequire(this.moduleId);
+
 			for (const watcher of this._watchers) {
 				watcher();
 			}
@@ -122,6 +127,7 @@ class ScriptManager {
 		const moduleId = nodeJsRequire.resolve(path);
 
 		let script = this._scripts.get(moduleId);
+
 		if (!script) {
 			script = {
 				script: new HotScript(moduleId),
@@ -130,8 +136,10 @@ class ScriptManager {
 			this._scripts.set(moduleId, script);
 		}
 		script.counter++;
+
 		return new HotScriptReference(script.script, () => {
 			script!.counter--;
+
 			if (script!.counter === 0) {
 				script!.script.dispose();
 				this._scripts.delete(moduleId);
@@ -149,7 +157,9 @@ class ManagedDebugSession {
 		private readonly _scriptManager: ScriptManager,
 	) {
 		const config: LaunchConfigExtension = {};
+
 		let s: vscode.DebugSession | undefined = _session;
+
 		while (s) {
 			Object.assign(config, config, s.configuration);
 			s = s.parentSession;
@@ -157,10 +167,12 @@ class ManagedDebugSession {
 
 		const debuggerScripts =
 			config["vscode-diagnostic-tools.debuggerScripts"];
+
 		if (debuggerScripts) {
 			const scripts = debuggerScripts.flatMap((path) =>
 				resolvePaths(path, this._session.workspaceFolder),
 			);
+
 			for (const script of scripts) {
 				const scriptRef =
 					this._scriptManager.load<ScriptModule>(script);
@@ -170,8 +182,10 @@ class ManagedDebugSession {
 					| IDisposable
 					| Promise<IDisposable>
 					| undefined = undefined;
+
 				function disposeScriptDisposables() {
 					const d = scriptDisposable;
+
 					if (!d) {
 						return;
 					}
@@ -193,10 +207,12 @@ class ManagedDebugSession {
 						console.error(
 							`'${script}' does not export a 'run' function!`,
 						);
+
 						return;
 					}
 
 					disposeScriptDisposables();
+
 					try {
 						scriptDisposable = scriptRef.exports.run(
 							this._debugSessionApi,
@@ -231,6 +247,7 @@ function resolvePaths(
 	workspaceFolder: vscode.WorkspaceFolder | undefined,
 ): string[] {
 	const tpl = new StringTemplate(path);
+
 	const resolvedPath = tpl.evaluate({
 		workspaceFolder: () => {
 			if (!workspaceFolder) {
@@ -241,6 +258,7 @@ function resolvePaths(
 			return workspaceFolder.uri.fsPath;
 		},
 	});
+
 	return [resolvedPath];
 }
 
