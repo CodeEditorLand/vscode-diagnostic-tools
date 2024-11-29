@@ -10,6 +10,7 @@ export class DiffJsonViewer {
 						context.extensionUri,
 						"webview",
 					);
+
 					webviewPanel.webview.options = {
 						enableScripts: true,
 						localResourceRoots: [webviewRoot],
@@ -41,14 +42,19 @@ export class DiffJsonViewer {
 
 					interface DiffJsonDocument {
 						diffs: unknown;
+
 						moves: unknown;
+
 						languageId: string;
+
 						originalFileName: string | undefined;
+
 						modifiedFileName: string | undefined;
 
 						original:
 							| { content: string; fileName: string }
 							| undefined;
+
 						modified:
 							| { content: string; fileName: string }
 							| undefined;
@@ -85,11 +91,15 @@ export class DiffJsonViewer {
 										doc.originalFileName!,
 									),
 								);
+
 							originalDocument = originalDoc.getText();
+
 							modifiedDocument = modifiedDoc.getText();
 						} else {
 							originalPath = doc.original?.fileName;
+
 							originalDocument = doc.original!.content;
+
 							modifiedDocument = doc.modified!.content;
 						}
 
@@ -99,9 +109,11 @@ export class DiffJsonViewer {
 							if (ext === "js") {
 								return "javascript";
 							}
+
 							if (ext === "tst") {
 								return "typescript";
 							}
+
 							return "text";
 						}
 
@@ -123,6 +135,7 @@ export class DiffJsonViewer {
 								update();
 							}
 						});
+
 					webviewPanel.onDidDispose(() => {
 						subscription.dispose();
 					});

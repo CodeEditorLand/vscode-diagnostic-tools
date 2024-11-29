@@ -1,8 +1,10 @@
 interface DiffingResult {
 	original: { content: string; fileName: string };
+
 	modified: { content: string; fileName: string };
 
 	diffs: IDetailedDiff[];
+
 	moves?: IMoveInfo[];
 }
 

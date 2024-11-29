@@ -23,9 +23,11 @@ export class DiffEditorHelpers {
 				if (!monacoEditorUrl) {
 					return;
 				}
+
 				const githubUrl = new URL(
 					"https://github.com/microsoft/vscode/issues/new",
 				);
+
 				githubUrl.searchParams.set(
 					"body",
 					`## Description
@@ -37,8 +39,11 @@ export class DiffEditorHelpers {
 
 [Monaco Editor Playground Repro](${monacoEditorUrl}) (click on "use latest dev" to verify a future bug-fix)\n`,
 				);
+
 				githubUrl.searchParams.set("assignees", "hediet");
+
 				githubUrl.searchParams.set("labels", "diff-editor");
+
 				githubUrl.searchParams.set("template", "Blank issue");
 
 				const uri = vscode.Uri.from({
@@ -47,6 +52,7 @@ export class DiffEditorHelpers {
 					path: githubUrl.pathname,
 					query: githubUrl.search,
 				});
+
 				await vscode.env.openExternal(githubUrl.toString() as any);
 			},
 		);
@@ -64,6 +70,7 @@ async function getMonacoEditorUrl() {
 
 	const input = activeTab.input as {
 		modified: vscode.Uri;
+
 		original: vscode.Uri;
 	};
 
@@ -99,6 +106,7 @@ async function getMonacoEditorUrl() {
 			});
 
 		const d = result.destinationSelection;
+
 		origSelection = new vscode.Range(
 			d.startLineNumber - 1,
 			d.startColumn - 1,
@@ -111,7 +119,9 @@ async function getMonacoEditorUrl() {
 		activeTextEditor.document.uri.toString() === input.original.toString()
 	) {
 		const tmp = modSelection;
+
 		modSelection = origSelection;
+
 		origSelection = tmp;
 	}
 
@@ -162,7 +172,9 @@ async function getMonacoEditorUrl() {
 
 interface MonacoEditorPlaygroundState {
 	html: string;
+
 	js: string;
+
 	css: string;
 }
 

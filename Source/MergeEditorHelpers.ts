@@ -10,6 +10,7 @@ export class MergeEditorHelpers {
 			"vscode-diagnostic-tools.open-folder-in-merge-editor-initial",
 			async (...args) => {
 				const uri = args[0];
+
 				await vscode.commands.executeCommand(
 					"merge.dev.loadContentsFromFolder",
 					{
@@ -26,6 +27,7 @@ export class MergeEditorHelpers {
 				vscode.window.showErrorMessage("Not implemented yet");
 
 				const uri = args[0];
+
 				await vscode.commands.executeCommand(
 					"merge.dev.loadContentsFromFolder",
 					{
@@ -71,6 +73,7 @@ export class MergeEditorHelpers {
 					} catch (e) {
 						// directory does not exist
 					}
+
 					if (ls && ls.length > 0) {
 						const hasGit = ls.some(
 							([name, type]) => name === ".git",
@@ -87,6 +90,7 @@ export class MergeEditorHelpers {
 
 							return;
 						}
+
 						for (const item of ls) {
 							await vscode.workspace.fs.delete(
 								vscode.Uri.joinPath(playgroundUri, item[0]),
@@ -103,6 +107,7 @@ export class MergeEditorHelpers {
 
 					function findFile(prefix: string): {
 						uri: vscode.Uri;
+
 						suffix: string;
 					} {
 						const fileName = targetDirLs.find(([fileName]) =>
@@ -112,6 +117,7 @@ export class MergeEditorHelpers {
 						if (!fileName) {
 							throw new Error("File not found");
 						}
+
 						return {
 							uri: vscode.Uri.joinPath(uri, fileName[0]),
 							suffix: fileName[0].substring(prefix.length),
@@ -127,6 +133,7 @@ export class MergeEditorHelpers {
 					await vscode.workspace.fs.createDirectory(playgroundUri);
 
 					const context = { cwd: playgroundUri.fsPath };
+
 					await execGitCmd(["init"], context);
 
 					const playgroundTargetFile = vscode.Uri.joinPath(
@@ -140,6 +147,7 @@ export class MergeEditorHelpers {
 					);
 
 					await execGitCmd(["add", "*"], context);
+
 					await execGitCmd(
 						[
 							"-c",
@@ -152,11 +160,14 @@ export class MergeEditorHelpers {
 					);
 
 					await execGitCmd(["checkout", "-b", "theirs"], context);
+
 					await vscode.workspace.fs.writeFile(
 						playgroundTargetFile,
 						await vscode.workspace.fs.readFile(paths.input2.uri),
 					);
+
 					await execGitCmd(["add", "*"], context);
+
 					await execGitCmd(
 						[
 							"-c",
@@ -169,11 +180,14 @@ export class MergeEditorHelpers {
 					);
 
 					await execGitCmd(["checkout", "main"], context);
+
 					await vscode.workspace.fs.writeFile(
 						playgroundTargetFile,
 						await vscode.workspace.fs.readFile(paths.input1.uri),
 					);
+
 					await execGitCmd(["add", "*"], context);
+
 					await execGitCmd(
 						[
 							"-c",
@@ -207,7 +221,9 @@ function execGitCmd(args: string[], context: { cwd: string }) {
 		let stderrData = "";
 
 		commandExecuter.stdout.on("data", (data) => (stdOutData += data));
+
 		commandExecuter.stderr.on("data", (data) => (stderrData += data));
+
 		commandExecuter.on("close", (code) =>
 			code != 0
 				? reject(stderrData.toString())

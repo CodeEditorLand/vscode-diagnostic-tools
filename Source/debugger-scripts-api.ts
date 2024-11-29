@@ -9,7 +9,9 @@ type RunFunction =
 
 interface IDebugSession {
 	name: string;
+
 	eval(expression: string): Promise<unknown>;
+
 	evalJs<T extends any[], TResult>(
 		bodyFn: (...args: T) => TResult,
 		...args: T

@@ -17,13 +17,16 @@ export class DebuggerScripts {
 
 		vscode.debug.onDidStartDebugSession((e) => {
 			const session = new ManagedDebugSession(e, scriptManager);
+
 			managedSessions.set(e, session);
 		});
+
 		vscode.debug.onDidTerminateDebugSession((e) => {
 			const session = managedSessions.get(e);
 
 			if (session) {
 				session.dispose();
+
 				managedSessions.delete(e);
 			}
 		});
@@ -56,12 +59,14 @@ class HotScript<T> {
 		if (this._timeout) {
 			clearTimeout(this._timeout);
 		}
+
 		this._timeout = setTimeout(() => {
 			this._reload();
 		}, 100);
 	});
 
 	private _exports: T | undefined;
+
 	public exports(): T | undefined {
 		return this._exports;
 	}
@@ -98,6 +103,7 @@ class HotScript<T> {
 
 	dispose() {
 		delete nodeJsRequire.cache[this.moduleId];
+
 		this._watcher.close();
 	}
 }
@@ -133,8 +139,10 @@ class ScriptManager {
 				script: new HotScript(moduleId),
 				counter: 0,
 			};
+
 			this._scripts.set(moduleId, script);
 		}
+
 		script.counter++;
 
 		return new HotScriptReference(script.script, () => {
@@ -142,6 +150,7 @@ class ScriptManager {
 
 			if (script!.counter === 0) {
 				script!.script.dispose();
+
 				this._scripts.delete(moduleId);
 			}
 		});
@@ -150,6 +159,7 @@ class ScriptManager {
 
 class ManagedDebugSession {
 	private readonly _disposables: IDisposable[] = [];
+
 	private readonly _debugSessionApi = createDebugSession(this._session);
 
 	constructor(
@@ -162,6 +172,7 @@ class ManagedDebugSession {
 
 		while (s) {
 			Object.assign(config, config, s.configuration);
+
 			s = s.parentSession;
 		}
 
@@ -176,6 +187,7 @@ class ManagedDebugSession {
 			for (const script of scripts) {
 				const scriptRef =
 					this._scriptManager.load<ScriptModule>(script);
+
 				this._disposables.push(scriptRef);
 
 				let scriptDisposable:
@@ -189,12 +201,14 @@ class ManagedDebugSession {
 					if (!d) {
 						return;
 					}
+
 					if ("dispose" in d) {
 						d.dispose();
 					} else {
 						d.then((d) => d.dispose());
 					}
 				}
+
 				this._disposables.push({
 					dispose: () => disposeScriptDisposables(),
 				});
@@ -203,6 +217,7 @@ class ManagedDebugSession {
 					if (!scriptRef.exports) {
 						return;
 					}
+
 					if (!scriptRef.exports.run) {
 						console.error(
 							`'${script}' does not export a 'run' function!`,
@@ -218,6 +233,7 @@ class ManagedDebugSession {
 							this._debugSessionApi,
 							{ vscode: vscode },
 						);
+
 						await scriptDisposable;
 					} catch (e) {
 						console.error(`Error while loading '${script}': ${e}`);
@@ -229,6 +245,7 @@ class ManagedDebugSession {
 						runScript();
 					}),
 				);
+
 				runScript();
 			}
 		}
@@ -238,6 +255,7 @@ class ManagedDebugSession {
 		for (const d of this._disposables) {
 			d.dispose();
 		}
+
 		this._disposables.length = 0;
 	}
 }
@@ -255,6 +273,7 @@ function resolvePaths(
 					`Cannot get workspace folder - '${path}' cannot be evaluated!`,
 				);
 			}
+
 			return workspaceFolder.uri.fsPath;
 		},
 	});
@@ -291,6 +310,7 @@ function createDebugSession(vscodeSession: vscode.DebugSession): IDebugSession {
 			if (typeof reply.result === "string") {
 				return JSON.parse(reply.result);
 			}
+
 			return undefined as any;
 		}
 
