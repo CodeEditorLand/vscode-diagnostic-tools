@@ -67,7 +67,7 @@
 		}
 	},
 	"dependencies": {
-		"@types/node": "22.10.0",
+		"@types/node": "22.10.1",
 		"base64-js": "1.5.1",
 		"lzma": "2.3.2",
 		"messagepack": "1.1.12"
