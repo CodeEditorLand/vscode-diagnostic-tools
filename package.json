@@ -93,12 +93,12 @@
 		"onStartupFinished"
 	],
 	"dependencies": {
-		"@types/node": "22.10.5",
+		"@types/node": "22.10.6",
 		"base64-js": "1.5.1",
 		"lzma": "2.3.2",
 		"messagepack": "1.1.12"
 	},
 	"devDependencies": {
-		"ts-loader": "9.5.1"
+		"ts-loader": "9.5.2"
 	}
 }
